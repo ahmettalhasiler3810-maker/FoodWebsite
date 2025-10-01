@@ -1,0 +1,14 @@
+﻿@model FoodWebsite.Models.Product
+<link rel="stylesheet" href="/css/style.css" />
+<section class="contact" id="delete-product">
+    <h1 class="heading">ürün <span>sil</span></h1>
+    <div class="row">
+        <form asp-action="Delete" method="post">
+            <h3>Ürünü Sil</h3>
+            <p>Ürün: @Model.Name ($@Model.Price) silinsin mi?</p>
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" class="btn" value="Sil" />
+            <a href="/Admin/Products" class="btn">İptal</a>
+        </form>
+    </div>
+</section>

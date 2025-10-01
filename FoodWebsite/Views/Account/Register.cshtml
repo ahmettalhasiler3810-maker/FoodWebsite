@@ -1,0 +1,24 @@
+﻿@model FoodWebsite.Models.ApplicationUser
+<link rel="stylesheet" href="/css/style.css" />
+<section class="contact" id="register">
+    <h1 class="heading">kayıt <span>ol</span></h1>
+    <div class="row">
+        <form asp-action="Register" method="post">
+            <h3>Kayıt Ol</h3>
+            <div class="inputBox">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="email" class="search-input" required />
+            </div>
+            <div class="inputBox">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="şifre" class="search-input" required />
+            </div>
+            <input type="submit" class="btn" value="Kayıt Ol" />
+            @if (ViewBag.Error != null)
+            {
+                <p style="color: red;">@ViewBag.Error</p>
+            }
+            <p>Zaten hesabın var mı? <a href="/Account/Login">Giriş Yap</a></p>
+        </form>
+    </div>
+</section>

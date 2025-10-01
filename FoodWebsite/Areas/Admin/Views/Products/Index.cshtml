@@ -1,0 +1,22 @@
+﻿@model List<FoodWebsite.Models.Product>
+<link rel="stylesheet" href="/css/style.css" />
+<section class="menu" id="admin-products">
+    <h1 class="heading">ürün <span>yönetimi</span></h1>
+    <a href="/Admin/Products/Create" class="btn">Yeni Ürün Ekle</a>
+    <div class="box-container">
+        @foreach (var product in Model)
+        {
+            <div class="box">
+                <div class="box-head">
+                    <img src="@product.ImageUrl" alt="menu" />
+                    <span class="menu-category">@product.Category</span>
+                    <h3>@product.Name</h3>
+                    <div class="price">$@product.Price</div>
+                </div>
+                <div class="box-bottom">
+                    <a href="/Admin/Products/Delete/@product.Id" class="btn">Sil</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>

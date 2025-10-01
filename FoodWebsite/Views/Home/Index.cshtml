@@ -1,0 +1,289 @@
+﻿@model List<FoodWebsite.Models.Product>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Restaurant Web Site</title>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="/images/logo.png" alt="logo" />
+        </a>
+        <nav class="navbar">
+            <a class="active" href="/">Home</a>
+            <a href="/Home/About">About</a>
+            <a href="/Home/Menu">Menu</a>
+            <a href="/Home/Products">Products</a>
+            <a href="/Home/Review">Review</a>
+            <a href="/Home/Contact">Contact</a>
+            <a href="/Home/Blogs">Blogs</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="/Account/Logout">Çıkış Yap</a>
+                if (User.IsInRole("Admin"))
+                {
+                    <a href="/Admin/Products">Admin Paneli</a>
+                }
+            }
+            else
+            {
+                <a href="/Account/Login">Giriş Yap</a>
+                <a href="/Account/Register">Kayıt Ol</a>
+            }
+        </nav>
+        <div class="buttons">
+            <button id="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button id="menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="search-form">
+            <input type="text" class="search-input" id="search-box" placeholder="search here" />
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="cart-items-container">
+            @if (ViewBag.CartItems.Count > 0)
+            {
+                @foreach (var item in ViewBag.CartItems)
+                {
+                    <div class="cart-item">
+                        <i class="fas fa-times" onclick="removeFromCart(@item.Id)"></i>
+                        <img src="@item.Product.ImageUrl" alt="menu" />
+                        <div class="content">
+                            <h3>@item.Product.Name</h3>
+                            <div class="price">$@item.Product.Price x @item.Quantity</div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn" onclick="confirmOrder()">Checkout Now</a>
+                }
+            }
+            else
+            {
+                <p>Sepet boş.</p>
+            }
+        </div>
+    </header>
+    <section class="home" id="home">
+        <div class="content">
+            <h3>EXPRESS HOME DELIVERY</h3>
+            <p>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit.</p>
+            <a href="#" class="btn">Order Now</a>
+        </div>
+    </section>
+    <section class="menu" id="menu">
+        <h1 class="heading">our <span>menu</span></h1>
+        <div class="box-container">
+            @foreach (var product in Model)
+            {
+                <div class="box">
+                    <div class="box-head">
+                        <img src="@product.ImageUrl" alt="menu" />
+                        <span class="menu-category">@product.Category</span>
+                        <h3>@product.Name</h3>
+                        <div class="price">$@product.Price</div>
+                    </div>
+                    <div class="box-bottom">
+                        <a href="#" class="btn" onclick="addToCart(@product.Id)">Add to Cart</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <section class="products" id="products">
+        <h1 class="heading">our <span>products</span></h1>
+        <div class="box-container">
+            @foreach (var product in Model)
+            {
+                <div class="box">
+                    <div class="box-head">
+                        <span class="title">@product.Category</span>
+                        <a href="#" class="name">@product.Name</a>
+                    </div>
+                    <div class="image">
+                        <img src="@product.ImageUrl" alt="" />
+                    </div>
+                    <div class="box-bottom">
+                        <div class="info">
+                            <b class="price">$@product.Price</b>
+                            <span class="amount">110gr / 300 Cal</span>
+                        </div>
+                        <div class="product-btn">
+                            <a href="#" onclick="addToCart(@product.Id)">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <section class="about" id="about">
+        <h1 class="heading">about <span>us</span></h1>
+        <div class="row">
+            <div class="image">
+                <img src="/images/about.jpg" alt="about" />
+            </div>
+            <div class="content">
+                <h3>What Is The Secret Recipe Of Our Burgers?</h3>
+                <p>Lorem Ipsum, Dolor Sit Amet Consectetur Adipisicing Elit.</p>
+                <a href="#" class="btn">learn more</a>
+            </div>
+        </div>
+    </section>
+    <section class="review" id="review">
+        <h1 class="heading">customer's <span>review</span></h1>
+        <div class="box-container">
+            <div class="box">
+                <img src="/images/quote.png" alt="quote" />
+                <p>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit.</p>
+                <img src="/images/avatar-1.png" alt="avatar" class="user" />
+                <h3>Jennifer Becker</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+            <div class="box">
+                <img src="/images/quote.png" alt="quote" />
+                <p>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit.</p>
+                <img src="/images/avatar-2.png" alt="avatar" class="user" />
+                <h3>John Doe</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="contact" id="contact">
+        <h1 class="heading">contact <span>us</span></h1>
+        <div class="row">
+            <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12037.852231349814!2d28.985091699999998!3d41.03700175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab7650656bd63%3A0x8ca058b28c20b6c3!2zVGFrc2ltIE1leWRhbsSxLCBHw7xtw7zFn3N1eXUsIDM0NDM1IEJleW_En2x1L8Swc3RhbmJ1bA!5e0!3m2!1str!2str!4v1652655842555!5m2!1str!2str" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <form>
+                <h3>get in touch</h3>
+                <div class="inputBox">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="name" class="search-input" />
+                </div>
+                <div class="inputBox">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="email" class="search-input" />
+                </div>
+                <div class="inputBox">
+                    <i class="fas fa-phone"></i>
+                    <input type="number" placeholder="phone number" class="search-input" />
+                </div>
+                <input type="submit" class="btn" value="contact now" />
+            </form>
+        </div>
+    </section>
+    <section class="blogs" id="blogs">
+        <h1 class="heading">our <span>blog</span></h1>
+        <div class="box-container">
+            <div class="box">
+                <div class="image">
+                    <img src="/images/blog-1.jpg" alt="blog" />
+                </div>
+                <div class="content">
+                    <a href="#" class="title">how to make burgers?</a>
+                    <span>by admin / 10st may, 2020</span>
+                    <p>Lorem Ipsum Dolor Sit Amet Consectetur, Adipisicing Elit.</p>
+                    <a href="#" class="btn">read more</a>
+                </div>
+            </div>
+            <div class="box">
+                <div class="image">
+                    <img src="/images/blog-2.jpg" alt="blog" />
+                </div>
+                <div class="content">
+                    <a href="#" class="title">how to make burgers?</a>
+                    <span>by admin / 10st may, 2020</span>
+                    <p>Lorem Ipsum Dolor Sit Amet Consectetur, Adipisicing Elit.</p>
+                    <a href="#" class="btn">read more</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="footer">
+        <div class="search">
+            <input type="text" class="search-input" placeholder="Search" />
+            <button class="btn btn-primary">search</button>
+        </div>
+        <div class="share">
+            <a href="#" class="fab fa-facebook"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+            <a href="#" class="fab fa-pinterest"></a>
+        </div>
+        <div class="links">
+            <a href="#" class="active">Home</a>
+            <a href="#">About</a>
+            <a href="#">Menu</a>
+            <a href="#">Products</a>
+            <a href="#">Review</a>
+            <a href="#">Contact</a>
+            <a href="#">Blogs</a>
+        </div>
+        <div class="credit">
+            created by <span>Emin Basbayan</span> | all rights reserved
+        </div>
+    </section>
+    <script src="/js/script.js"></script>
+    <script>
+        async function addToCart(productId) {
+            const response = await fetch('/api/Cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ProductId: productId, Quantity: 1 })
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Sepete eklenemedi. Giriş yapın.');
+            }
+        }
+
+        async function removeFromCart(cartItemId) {
+            const response = await fetch('/api/Cart/' + cartItemId, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Ürün sepetten silinemedi.');
+            }
+        }
+
+        async function confirmOrder() {
+            const response = await fetch('/api/Orders/Confirm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: '@User.Identity.Name' })
+            });
+            if (response.ok) {
+                alert('Sipariş onaylandı! E-postanızı kontrol edin.');
+                window.location.reload();
+            } else {
+                alert('Sipariş onaylanamadı.');
+            }
+        }
+    </script>
+</body>
+</html>
