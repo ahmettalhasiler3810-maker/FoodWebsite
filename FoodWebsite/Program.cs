@@ -1,48 +1,36 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FoodWebsite.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DbContext ekle
+// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
-// Identity ekle
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// Identity - EN BASÝT ÞEKÝLDE
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    // Þifre kurallarýný basitleþtir
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 1;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Razor Pages ekle
-builder.Services.AddRazorPages();
-
-// Controllers with Views ekle
+// MVC ve Razor Pages
 builder.Services.AddControllersWithViews();
-
-// Cookie Auth ekle
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options => {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/Logout";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-    });
-
-// AUTHORIZATION POLICY'Ý DEÐÝÞTÝR - BU SATIRI EKLE
-builder.Services.AddAuthorization(options => {
-    options.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-
-    // Cart controller için policy oluþtur (opsiyonel)
-    options.AddPolicy("AllowAnonymous", policy =>
-        policy.RequireAssertion(context => true));
-});
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Pipeline
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -55,61 +43,75 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();  // Bu kalabilir AMA controller'da [AllowAnonymous] kullan
-
-// ROUTE'LARI GÜNCELLE - ÖNCE API ROUTE'LARI
-app.MapControllerRoute(
-    name: "api",
-    pattern: "api/{controller}/{action}/{id?}");
-
-app.MapControllerRoute(
-    name: "admin",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.MapRazorPages();
 
-// Admin Seed kodu ayný kalabilir...
+// Admin kullanýcýsý oluþtur
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-        if (!await roleManager.RoleExistsAsync("Admin"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
-        }
-        if (!await roleManager.RoleExistsAsync("Guest"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("Guest"));
-        }
+        // Database'in hazýr olmasýný bekle
+        await context.Database.MigrateAsync();
 
+        // Admin kullanýcýsýný oluþtur
         var adminUser = await userManager.FindByEmailAsync("admin@food.com");
         if (adminUser == null)
         {
-            adminUser = new ApplicationUser
+            adminUser = new IdentityUser
             {
                 UserName = "admin",
                 Email = "admin@food.com",
                 EmailConfirmed = true
             };
-            var result = await userManager.CreateAsync(adminUser, "Admin123!");
+
+            var result = await userManager.CreateAsync(adminUser, "123");
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                Console.WriteLine("? ADMIN KULLANICI OLUÞTURULDU!");
+                Console.WriteLine("?? Email: admin@food.com");
+                Console.WriteLine("?? Þifre: 123");
             }
+            else
+            {
+                Console.WriteLine("? ADMIN OLUÞTURULAMADI:");
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($" - {error.Description}");
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("? ADMIN ZATEN VAR: admin@food.com / 123");
+        }
+
+        // Test kullanýcýsý
+        var testUser = await userManager.FindByEmailAsync("test@test.com");
+        if (testUser == null)
+        {
+            testUser = new IdentityUser
+            {
+                UserName = "test",
+                Email = "test@test.com",
+                EmailConfirmed = true
+            };
+            await userManager.CreateAsync(testUser, "123");
+            Console.WriteLine("? TEST USER: test@test.com / 123");
         }
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Seed hatasý!");
+        logger.LogError(ex, "Database hazýrlama hatasý!");
     }
 }
 

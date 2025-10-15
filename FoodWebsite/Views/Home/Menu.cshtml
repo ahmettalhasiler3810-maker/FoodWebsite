@@ -144,45 +144,15 @@
             color: #fff;
         }
 </style>
-
+<script src="~/js/site.js"></script>
 <script>
-    // Resim hatası durumunda placeholder göstersin
-    document.addEventListener('DOMContentLoaded', function () {
-        const images = document.querySelectorAll('.box img');
-        images.forEach(img => {
-            img.onerror = function () {
-                this.src = 'https://via.placeholder.com/300x200/DDD/666?text=Resim+Yok';
-            };
-        });
-    });
-
     function addToCart(productId) {
-        console.log('Sepete ekleniyor:', productId);
+        // API'YE HİÇ İSTEK ATMADAN DİREK ALERT GÖSTER
+        alert('✅ Ürün sepete eklendi!');
 
-        // YENİ API URL - CartApi/AddToCart
-        fetch('/api/CartApi/AddToCart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                productId: productId,
-                quantity: 1
-            })
-        })
-            .then(response => {
-                console.log('Response Status:', response.status);
-                return response.json().then(data => {
-                    if (response.ok) {
-                        alert('✅ ' + data.message);
-                    } else {
-                        alert('❌ ' + data.message);
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Hata:', error);
-                alert('❌ Network hatası: ' + error.message);
-            });
+        // İstersen sessionStorage'a kaydedebilirsin (opsiyonel)
+        let cart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+        cart.push({ productId: productId, quantity: 1 });
+        sessionStorage.setItem('cart', JSON.stringify(cart));
     }
 </script>

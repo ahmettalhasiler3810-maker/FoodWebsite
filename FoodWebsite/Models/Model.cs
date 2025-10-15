@@ -37,11 +37,4 @@ namespace FoodWebsite.Models
         public int Quantity { get; set; }
         public decimal Price { get; set; }
     }
-
-    public class ApplicationUser : IdentityUser
-    {
-        public List<CartItem> CartItems { get; set; }
-        public List<Order> Orders { get; set; }
-
-    }
 }

@@ -42,3 +42,48 @@ menuBtn.addEventListener("click", function () {
         }
     });
 });
+// Sepete ekleme fonksiyonu - GİRİŞSİZ VERSİYON
+function addToCart(event, productId, productName, productPrice, productImage) {
+    event.preventDefault();
+
+    // Giriş kontrolünü KALDIRIYORUZ - direkt sepete ekliyoruz
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Ürün sepette var mı kontrol et
+    const existingProduct = cart.find(item => item.id === productId);
+
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            image: productImage,
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showSuccessMessage('Ürün sepete eklendi!');
+
+    return false;
+}
+
+// Başarı mesajı (SweetAlert ile)
+function showSuccessMessage(message) {
+    // SweetAlert varsa
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Başarılı!',
+            text: message,
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    } else {
+        // SweetAlert yoksa normal alert
+        alert(message);
+    }
+}
