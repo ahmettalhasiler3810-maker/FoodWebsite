@@ -1,10 +1,14 @@
-﻿<link rel="stylesheet" href="/css/style.css" />
+﻿@{
+    ViewData["Title"] = "Review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="/css/style.css" />
 <section class="review" id="review">
     <h1 class="heading">customer's <span>review</span></h1>
     <div class="box-container">
         <div class="box">
             <img src="/images/quote.png" alt="quote" />
-            <p>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit.</p>
+            <p>Great experience overall! I would definitely recommend. A couple of small details could have made it perfect.</p>
             <img src="/images/avatar-1.png" alt="avatar" class="user" />
             <h3>Jennifer Becker</h3>
             <div class="stars">
@@ -17,7 +21,7 @@
         </div>
         <div class="box">
             <img src="/images/quote.png" alt="quote" />
-            <p>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit.</p>
+            <p>Very pleased with the service; it met my expectations. It would have been perfect if it were a bit easier to use.</p>
             <img src="/images/avatar-2.png" alt="avatar" class="user" />
             <h3>John Doe</h3>
             <div class="stars">

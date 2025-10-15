@@ -5,17 +5,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FoodWebsite.Models
 {
-    public class Product
-    {
-        public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public string Description { get; set; }
-        [Required]
-        public decimal Price { get; set; }
-        public string ImageUrl { get; set; }
-        public string Category { get; set; }
-    }
 
     public class CartItem
     {
@@ -53,5 +42,6 @@ namespace FoodWebsite.Models
     {
         public List<CartItem> CartItems { get; set; }
         public List<Order> Orders { get; set; }
+
     }
 }

@@ -1,49 +1,153 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
     <title>@ViewData["Title"] - FoodWebsite</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/FoodWebsite.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FoodWebsite</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <!-- Navbar (header) -->
+    <header class="header">
+        <a href="/" class="logo">
+            <img src="/images/logo.png" alt="logo" />
+        </a>
+        <nav class="navbar">
+            <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" href="/">Home</a>
+            <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "About" ? "active" : "")" href="/Home/About">About</a>
+            <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Menu" ? "active" : "")" href="/Home/Menu">Menu</a>
+            <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Review" ? "active" : "")" href="/Home/Review">Review</a>
+            <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Contact" ? "active" : "")" href="/Home/Contact">Contact</a>
+            <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Blogs" ? "active" : "")" href="/Home/Blogs">Blogs</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <span class="navbar-text user-name">Hoş geldin, @User.Identity.Name!</span>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="/Admin/Products">Admin Panel</a>
+                }
+                <form asp-action="Logout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()  <!-- Token ekle, POST çalışır -->
+                    <button type="submit" class="nav-link btn btn-link text-dark" style="border: none; background: none;">Çıkış Yap</button>
+                </form>
+            }
+            <a href="/Account/Login">Giriş Yap</a>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - FoodWebsite - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="buttons">
+            <button id="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button id="menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+        <div class="search-form">
+            <input type="text" class="search-input" id="search-box" placeholder="search here" />
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="cart-items-container">
+            @if (ViewBag.CartItems != null && (ViewBag.CartItems as List<FoodWebsite.Models.CartItem>).Count > 0)
+            {
+                @foreach (var item in ViewBag.CartItems as List<FoodWebsite.Models.CartItem>)
+                {
+                    <div class="cart-item">
+                        <i class="fas fa-times" onclick="removeFromCart(@item.Id)"></i>
+                        @if (!string.IsNullOrEmpty(item.Product?.ImageUrl))
+                        {
+                            <img src="@item.Product.ImageUrl" alt="menu" />
+                        }
+                        <div class="content">
+                            <h3>@item.Product?.Name</h3>
+                            <div class="price">$@item.Product?.Price x @item.Quantity</div>
+                        </div>
+                    </div>
+                }
+                <a href="#" class="btn" onclick="confirmOrder()">Checkout Now</a>
+            }
+            else
+            {
+                <p>Sepet boş.</p>
+            }
+        </div>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <section class="footer">
+        <div class="search">
+            <input type="text" class="search-input" placeholder="Search" />
+            <button class="btn btn-primary">search</button>
+        </div>
+        <div class="share">
+            <a href="#" class="fab fa-facebook"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+            <a href="#" class="fab fa-pinterest"></a>
+        </div>
+        <div class="links">
+            <a href="/" class="active">Home</a>
+            <a href="/Home/About">About</a>
+            <a href="/Home/Menu">Menu</a>
+            <a href="/Home/Products">Products</a>
+            <a href="/Home/Review">Review</a>
+            <a href="/Home/Contact">Contact</a>
+            <a href="/Home/Blogs">Blogs</a>
+        </div>
+        <div class="credit">
+            created by <span>Ahmet Talha Siler</span> | all rights reserved
+        </div>
+    </section>
+
+    <script src="/js/site.js"></script>
+    <script>
+        async function addToCart(productId) {
+            const response = await fetch('/api/Cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ProductId: productId, Quantity: 1 })
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Sepete eklenemedi. Giriş yapın.');
+            }
+        }
+
+        async function removeFromCart(cartItemId) {
+            const response = await fetch('/api/Cart/' + cartItemId, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Ürün sepetten silinemedi.');
+            }
+        }
+
+        async function confirmOrder() {
+            const response = await fetch('/api/Orders/Confirm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value' })
+            });
+            if (response.ok) {
+                alert('Sipariş onaylandı! E-postanızı kontrol edin.');
+                window.location.reload();
+            } else {
+                alert('Sipariş onaylanamadı.');
+            }
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

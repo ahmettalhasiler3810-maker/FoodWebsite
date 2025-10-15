@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodWebsite.Views.Home
+namespace FoodWebsite.Views.Account
 {
-    public class ProductsModel : PageModel
+    public class UsersModel : PageModel
     {
         public void OnGet()
         {

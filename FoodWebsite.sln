@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35431.28
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodWebsite", "FoodWebsite\FoodWebsite.csproj", "{62B9DCEC-227B-4E62-80D4-9F1613E47B63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodWebsite.AppHost", "FoodWebsite.AppHost\FoodWebsite.AppHost.csproj", "{CF1A24B9-5AEA-4FA5-9AF2-72C6B776593E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodWebsite.AppHost", "FoodWebsite.AppHost\FoodWebsite.AppHost.csproj", "{CF1A24B9-5AEA-4FA5-9AF2-72C6B776593E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodWebsite.ServiceDefaults", "FoodWebsite.ServiceDefaults\FoodWebsite.ServiceDefaults.csproj", "{788232B9-3F8A-4BBD-BDDE-5155DE1112AA}"
 EndProject

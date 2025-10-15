@@ -1,66 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FoodWebsite.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace FoodWebsite.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class CartController : ControllerBase
+    [Route("api/[controller]")]
+    public class FastCartController : ControllerBase  // İSİM DEĞİŞTİRDİM
     {
         private readonly ApplicationDbContext _context;
 
-        public CartController(ApplicationDbContext context)
+        public FastCartController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetCart()
+        [HttpPost("Add")]
+        public async Task<IActionResult> AddToCart([FromBody] CartItemModel model)
         {
-            var userId = User.Identity.Name;
-            var cartItems = await _context.CartItems
-                .Where(c => c.UserId == userId)
-                .Include(c => c.Product)
-                .ToListAsync();
-            return Ok(cartItems);
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> AddToCart([FromBody] CartItem item)
-        {
-            item.UserId = User.Identity.Name;
-            var existingItem = await _context.CartItems
-                .FirstOrDefaultAsync(c => c.UserId == item.UserId && c.ProductId == item.ProductId);
-
-            if (existingItem != null)
+            try
             {
-                existingItem.Quantity += item.Quantity;
+                Console.WriteLine("FASTCART ÇALIŞIYOR! ProductId: " + model.ProductId);
+
+                // GEÇİCİ USER ID - HERKES EKLEYEBİLSİN
+                var tempUserId = "temp-user-" + Guid.NewGuid().ToString();
+
+                var cartItem = new CartItem
+                {
+                    ProductId = model.ProductId,
+                    Quantity = model.Quantity,
+                    UserId = tempUserId
+                };
+
+                _context.CartItems.Add(cartItem);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { success = true, message = "Ürün sepete eklendi!" });
             }
-            else
+            catch (Exception ex)
             {
-                _context.CartItems.Add(item);
+                Console.WriteLine("HATA: " + ex.Message);
+                return BadRequest(new { success = false, message = ex.Message });
             }
-            await _context.SaveChangesAsync();
-            return Ok();
         }
+    }
 
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> RemoveFromCart(int id)
-        {
-            var item = await _context.CartItems.FindAsync(id);
-            if (item == null || item.UserId != User.Identity.Name)
-                return NotFound();
-
-            _context.CartItems.Remove(item);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
+    public class CartItemModel
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; } = 1;
     }
 }

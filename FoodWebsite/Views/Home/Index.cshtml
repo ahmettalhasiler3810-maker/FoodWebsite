@@ -1,4 +1,9 @@
 ﻿@model List<FoodWebsite.Models.Product>
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;  // Layout kullanma, tam sayfa olarak render et (bu HTML layout gibi)
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/site.css" />
     <title>Restaurant Web Site</title>
 </head>
 <body>
@@ -16,24 +21,23 @@
         </a>
         <nav class="navbar">
             <a class="active" href="/">Home</a>
-            <a href="/Home/About">About</a>
-            <a href="/Home/Menu">Menu</a>
-            <a href="/Home/Products">Products</a>
-            <a href="/Home/Review">Review</a>
-            <a href="/Home/Contact">Contact</a>
-            <a href="/Home/Blogs">Blogs</a>
+            <a href="home/about">About</a>
+            <a href="home/menu">Menu</a>
+            <a href="home/review">Review</a>
+            <a href="home/contact">Contact</a>
+            <a href="home/blogs">Blogs</a>
             @if (User.Identity.IsAuthenticated)
             {
                 <a href="/Account/Logout">Çıkış Yap</a>
                 if (User.IsInRole("Admin"))
                 {
-                    <a href="/Admin/Products">Admin Paneli</a>
+                    <a href="@Url.Action("Index", "Products", new { area = "Admin" })">Admin Panel</a>
                 }
             }
             else
             {
                 <a href="/Account/Login">Giriş Yap</a>
-                <a href="/Account/Register">Kayıt Ol</a>
+                
             }
         </nav>
         <div class="buttons">
@@ -52,20 +56,23 @@
             <i class="fas fa-search"></i>
         </div>
         <div class="cart-items-container">
-            @if (ViewBag.CartItems.Count > 0)
+            @if (ViewBag.CartItems != null && (ViewBag.CartItems as List<FoodWebsite.Models.CartItem>).Count > 0)
             {
-                @foreach (var item in ViewBag.CartItems)
+                @foreach (var item in ViewBag.CartItems as List<FoodWebsite.Models.CartItem>)
                 {
                     <div class="cart-item">
                         <i class="fas fa-times" onclick="removeFromCart(@item.Id)"></i>
-                        <img src="@item.Product.ImageUrl" alt="menu" />
+                        @if (!string.IsNullOrEmpty(item.Product?.ImageUrl))
+                        {
+                            <img src="@item.Product.ImageUrl" alt="menu" />
+                        }
                         <div class="content">
-                            <h3>@item.Product.Name</h3>
-                            <div class="price">$@item.Product.Price x @item.Quantity</div>
+                            <h3>@item.Product?.Name</h3>
+                            <div class="price">$@item.Product?.Price x @item.Quantity</div>
                         </div>
                     </div>
-                    <a href="#" class="btn" onclick="confirmOrder()">Checkout Now</a>
                 }
+                <a href="#" class="btn" onclick="confirmOrder()">Checkout Now</a>
             }
             else
             {
@@ -76,54 +83,97 @@
     <section class="home" id="home">
         <div class="content">
             <h3>EXPRESS HOME DELIVERY</h3>
-            <p>Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit.</p>
-            <a href="#" class="btn">Order Now</a>
+            <p>
+                🍕 About Us
+                We deliver fresh, delicious meals straight to your door.
+                Every dish is made with high-quality ingredients and prepared by our expert chefs. Whether you want a quick lunch or a cozy dinner, we’re here to bring you great taste — fast and fresh!
+
+                Fast delivery, fresh food, happy customers!
+            </p>
+            <a href="/HOME/Menu" class="btn">Order Now</a>
+
+            <!-- Register butonu (sadece giriş yapmamışsa, Home/Index'e özel) -->
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="mb-3 mt-3">
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Kayıt Ol</a>
+                    <p>Kaydol, sepetini yönet!</p>
+                </div>
+            }
         </div>
     </section>
     <section class="menu" id="menu">
         <h1 class="heading">our <span>menu</span></h1>
         <div class="box-container">
-            @foreach (var product in Model)
+            @if (Model != null && Model.Any())
             {
-                <div class="box">
-                    <div class="box-head">
-                        <img src="@product.ImageUrl" alt="menu" />
-                        <span class="menu-category">@product.Category</span>
-                        <h3>@product.Name</h3>
-                        <div class="price">$@product.Price</div>
+                @foreach (var product in Model)
+                {
+                    <div class="box">
+                        <div class="box-head">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="menu" />
+                            }
+                            else
+                            {
+                                <img src="/images/default-menu.jpg" alt="default" />  <!-- Varsayılan resim -->
+                            }
+                            <span class="menu-category">@(product.Category ?? "Genel")</span>
+                            <h3>@product.Name</h3>
+                            <div class="price">$@product.Price</div>
+                        </div>
+                        <div class="box-bottom">
+                            <a href="#" class="btn" onclick="addToCart(@product.Id)">Add to Cart</a>
+                        </div>
                     </div>
-                    <div class="box-bottom">
-                        <a href="#" class="btn" onclick="addToCart(@product.Id)">Add to Cart</a>
-                    </div>
-                </div>
+                }
+            }
+            else
+            {
+                <p>Henüz menü ürünü yok.</p>
             }
         </div>
     </section>
     <section class="products" id="products">
         <h1 class="heading">our <span>products</span></h1>
         <div class="box-container">
-            @foreach (var product in Model)
+            @if (Model != null && Model.Any())
             {
-                <div class="box">
-                    <div class="box-head">
-                        <span class="title">@product.Category</span>
-                        <a href="#" class="name">@product.Name</a>
-                    </div>
-                    <div class="image">
-                        <img src="@product.ImageUrl" alt="" />
-                    </div>
-                    <div class="box-bottom">
-                        <div class="info">
-                            <b class="price">$@product.Price</b>
-                            <span class="amount">110gr / 300 Cal</span>
+                @foreach (var product in Model)
+                {
+                    <div class="box">
+                        <div class="box-head">
+                            <span class="title">@(product.Category ?? "Ürün")</span>
+                            <a href="#" class="name">@product.Name</a>
                         </div>
-                        <div class="product-btn">
-                            <a href="#" onclick="addToCart(@product.Id)">
-                                <i class="fas fa-plus"></i>
-                            </a>
+                        <div class="image">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="" />
+                            }
+                            else
+                            {
+                                <img src="/images/default-product.jpg" alt="default" />
+                            }
+                        </div>
+                        <div class="box-bottom">
+                            <div class="info">
+                                <b class="price">$@product.Price</b>
+                                <span class="amount">110gr / 300 Cal</span>
+                            </div>
+                            <div class="product-btn">
+                                <a href="#" onclick="addToCart(@product.Id)">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+            }
+            else
+            {
+                <p>Henüz ürün yok.</p>
             }
         </div>
     </section>
@@ -242,10 +292,10 @@
             <a href="#">Blogs</a>
         </div>
         <div class="credit">
-            created by <span>Emin Basbayan</span> | all rights reserved
+            created by <span>Ahmet Talha Siler</span> | all rights reserved
         </div>
     </section>
-    <script src="/js/script.js"></script>
+    <script src="/js/site.js"></script>
     <script>
         async function addToCart(productId) {
             const response = await fetch('/api/Cart', {
@@ -275,7 +325,7 @@
             const response = await fetch('/api/Orders/Confirm', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: '@User.Identity.Name' })
+                body: JSON.stringify({ userId: '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value' })  // GUID UserId kullan
             });
             if (response.ok) {
                 alert('Sipariş onaylandı! E-postanızı kontrol edin.');

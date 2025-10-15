@@ -1,24 +1,25 @@
-﻿@model FoodWebsite.Models.ApplicationUser
-<link rel="stylesheet" href="/css/style.css" />
+﻿@* @model FoodWebsite.Models.ApplicationUser
+ *@
+<link rel="stylesheet" href="/css/site.css" />
 <section class="contact" id="login">
-    <h1 class="heading">giriş <span>yap</span></h1>
+    <h1 class="heading">Login </h1>
     <div class="row">
         <form asp-action="Login" method="post">
-            <h3>Giriş Yap</h3>
+            <h3>Login</h3>
             <div class="inputBox">
                 <i class="fas fa-envelope"></i>
                 <input type="email" name="email" placeholder="email" class="search-input" required />
             </div>
             <div class="inputBox">
                 <i class="fas fa-lock"></i>
-                <input type="password" name="password" placeholder="şifre" class="search-input" required />
+                <input type="password" name="password" placeholder="password" class="search-input" required />
             </div>
             <input type="submit" class="btn" value="Giriş Yap" />
             @if (ViewBag.Error != null)
             {
                 <p style="color: red;">@ViewBag.Error</p>
             }
-            <p>Hesabın yok mu? <a href="/Account/Register">Kayıt Ol</a></p>
+            <p style="color:white">Don't have an account? <a href="/Account/Register" style="color:white">Register</a></p>
         </form>
     </div>
 </section>

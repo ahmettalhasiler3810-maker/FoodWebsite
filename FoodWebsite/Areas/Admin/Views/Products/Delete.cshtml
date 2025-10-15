@@ -1,14 +1,23 @@
 ﻿@model FoodWebsite.Models.Product
-<link rel="stylesheet" href="/css/style.css" />
-<section class="contact" id="delete-product">
-    <h1 class="heading">ürün <span>sil</span></h1>
-    <div class="row">
-        <form asp-action="Delete" method="post">
-            <h3>Ürünü Sil</h3>
-            <p>Ürün: @Model.Name ($@Model.Price) silinsin mi?</p>
-            <input type="hidden" asp-for="Id" />
-            <input type="submit" class="btn" value="Sil" />
-            <a href="/Admin/Products" class="btn">İptal</a>
-        </form>
-    </div>
-</section>
+@{
+    ViewData["Title"] = "Ürün Sil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="/css/admin.css" />
+
+<h2>Ürün Sil</h2>
+
+<div>
+    <h3>Silmek istediğinize emin misiniz?</h3>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+        <!-- Diğer alanlar: Category, Price vs. -->
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Sil" class="btn btn-danger" /> |
+        <a asp-action="Products">Geri</a>
+    </form>
+</div>

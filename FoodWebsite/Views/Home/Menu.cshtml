@@ -1,36 +1,188 @@
 ﻿@model List<FoodWebsite.Models.Product>
-<link rel="stylesheet" href="/css/style.css" />
+@{
+    ViewData["Title"] = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <section class="menu" id="menu">
     <h1 class="heading">our <span>menu</span></h1>
     <div class="box-container">
-        @foreach (var product in Model)
-        {
-            <div class="box">
-                <div class="box-head">
-                    <img src="@product.ImageUrl" alt="menu" />
-                    <span class="menu-category">@product.Category</span>
-                    <h3>@product.Name</h3>
-                    <div class="price">$@product.Price</div>
-                </div>
-                <div class="box-bottom">
-                    <a href="#" class="btn" onclick="addToCart(@product.Id)">Add to Cart</a>
-                </div>
+        <!-- TEST - Sabit 2 ürün gösterelim -->
+        <div class="box">
+            <div class="box-head">
+                <!-- Direk resim yolunu yazalım -->
+                <img src="/images/menu-1.png" alt="Pizza" onerror="this.src='https://via.placeholder.com/300x200/FF6B6B/white?text=Pizza'" />
+                <span class="menu-category">Pizza</span>
+                <h3>Pizza Margherita</h3>
+                <div class="price">$15.99</div>
             </div>
-        }
+            <div class="box-bottom">
+                <a href="#" class="btn" onclick="addToCart(1)">Add to Cart</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-head">
+                <img src="/images/menu-2.png" alt="Burger" onerror="this.src='https://via.placeholder.com/300x200/4ECDC4/white?text=Burger'" />
+                <span class="menu-category">Burger</span>
+                <h3>Big Burger</h3>
+                <div class="price">$12.50</div>
+            </div>
+            <div class="box-bottom">
+                <a href="#" class="btn" onclick="addToCart(2)">Add to Cart</a>
+            </div>
+        </div>
+
+        <!-- Ekstra 2 ürün daha -->
+        <div class="box">
+            <div class="box-head">
+                <img src="/images/menu-3.png" alt="Fries" onerror="this.src='https://via.placeholder.com/300x200/45B7D1/white?text=Fries'" />
+                <span class="menu-category">Pizza</span>
+                <h3>Mediterranean Glory</h3>
+                <div class="price">$5.99</div>
+            </div>
+            <div class="box-bottom">
+                <a href="#" class="btn" onclick="addToCart(3)">Add to Cart</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-head">
+                <img src="/images/menu-4.png" alt="Pasta" onerror="this.src='https://via.placeholder.com/300x200/F7DC6F/white?text=Pasta'" />
+                <span class="menu-category">Burger</span>
+                <h3>The Bomb Burger</h3>
+                <div class="price">$13.99</div>
+            </div>
+            <div class="box-bottom">
+                <a href="#" class="btn" onclick="addToCart(4)">Add to Cart</a>
+            </div>
+        </div>
     </div>
 </section>
-<script src="/js/script.js"></script>
-<script>
-    async function addToCart(productId) {
-        const response = await fetch('/api/Cart', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ProductId: productId, Quantity: 1 })
-        });
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            alert('Sepete eklenemedi. Giriş yapın.');
+
+<style>
+    .menu {
+        padding: 2rem 5%;
+    }
+
+    .heading {
+        text-align: center;
+        font-size: 3rem;
+        margin-bottom: 2rem;
+    }
+
+        .heading span {
+            color: #ff3838;
         }
+
+    .box-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .box {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease;
+        border: 0.1rem solid rgba(0,0,0,0.1);
+    }
+
+        .box:hover {
+            transform: translateY(-0.5rem);
+        }
+
+    .box-head img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        background: #f8f9fa; /* Resim yoksa arkaplan */
+    }
+
+    .menu-category {
+        display: inline-block;
+        background: #ff3838;
+        color: #fff;
+        padding: 0.3rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .box h3 {
+        font-size: 2rem;
+        color: #333;
+        margin: 1rem 0;
+    }
+
+    .price {
+        font-size: 2rem;
+        color: #ff3838;
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+
+    .btn {
+        display: inline-block;
+        background: #ff3838;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-size: 1.4rem;
+        transition: background 0.3s ease;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background: #e63030;
+            color: #fff;
+        }
+</style>
+
+<script>
+    // Resim hatası durumunda placeholder göstersin
+    document.addEventListener('DOMContentLoaded', function () {
+        const images = document.querySelectorAll('.box img');
+        images.forEach(img => {
+            img.onerror = function () {
+                this.src = 'https://via.placeholder.com/300x200/DDD/666?text=Resim+Yok';
+            };
+        });
+    });
+
+    function addToCart(productId) {
+        console.log('Sepete ekleniyor:', productId);
+
+        // YENİ API URL - CartApi/AddToCart
+        fetch('/api/CartApi/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId: productId,
+                quantity: 1
+            })
+        })
+            .then(response => {
+                console.log('Response Status:', response.status);
+                return response.json().then(data => {
+                    if (response.ok) {
+                        alert('✅ ' + data.message);
+                    } else {
+                        alert('❌ ' + data.message);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('❌ Network hatası: ' + error.message);
+            });
     }
 </script>
