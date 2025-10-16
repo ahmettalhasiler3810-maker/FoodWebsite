@@ -1,36 +1,36 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using FoodWebsite.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
 
 // DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Identity - EN BASÝT ÞEKÝLDE
+// Identity - EN BASÝT HALÝ
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    // Þifre kurallarýný basitleþtir
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 1;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 1;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// MVC ve Razor Pages
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -39,18 +39,24 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+// ?? AREA ROUTE (Admin, User vs. gibi area'lar için)
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+// ?? NORMAL ROUTE
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
-// Admin kullanýcýsý oluþtur
+// KULLANICI OLUÞTUR
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -59,59 +65,27 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<ApplicationDbContext>();
         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-        // Database'in hazýr olmasýný bekle
-        await context.Database.MigrateAsync();
+        // Veritabanýný temizle ve oluþtur
+        await context.Database.EnsureDeletedAsync();
+        await context.Database.EnsureCreatedAsync();
 
-        // Admin kullanýcýsýný oluþtur
-        var adminUser = await userManager.FindByEmailAsync("admin@food.com");
-        if (adminUser == null)
-        {
-            adminUser = new IdentityUser
-            {
-                UserName = "admin",
-                Email = "admin@food.com",
-                EmailConfirmed = true
-            };
+        Console.WriteLine("? VERÝTABANI OLUÞTURULDU!");
 
-            var result = await userManager.CreateAsync(adminUser, "123");
-            if (result.Succeeded)
-            {
-                Console.WriteLine("? ADMIN KULLANICI OLUÞTURULDU!");
-                Console.WriteLine("?? Email: admin@food.com");
-                Console.WriteLine("?? Þifre: 123");
-            }
-            else
-            {
-                Console.WriteLine("? ADMIN OLUÞTURULAMADI:");
-                foreach (var error in result.Errors)
-                {
-                    Console.WriteLine($" - {error.Description}");
-                }
-            }
-        }
-        else
+        // ADMIN KULLANICISI
+        var admin = new IdentityUser
         {
-            Console.WriteLine("? ADMIN ZATEN VAR: admin@food.com / 123");
-        }
+            UserName = "admin",
+            Email = "admin@food.com",
+            EmailConfirmed = true
+        };
 
-        // Test kullanýcýsý
-        var testUser = await userManager.FindByEmailAsync("test@test.com");
-        if (testUser == null)
-        {
-            testUser = new IdentityUser
-            {
-                UserName = "test",
-                Email = "test@test.com",
-                EmailConfirmed = true
-            };
-            await userManager.CreateAsync(testUser, "123");
-            Console.WriteLine("? TEST USER: test@test.com / 123");
-        }
+        var result = await userManager.CreateAsync(admin, "123");
+        if (result.Succeeded)
+            Console.WriteLine("? ADMIN: admin / 123");
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Database hazýrlama hatasý!");
+        Console.WriteLine($"?? HATA: {ex.Message}");
     }
 }
 

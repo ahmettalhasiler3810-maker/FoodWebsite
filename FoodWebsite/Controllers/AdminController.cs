@@ -13,6 +13,7 @@ using System.Diagnostics;
 namespace FoodWebsite.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [Area("Admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;

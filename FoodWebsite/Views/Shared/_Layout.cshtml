@@ -23,17 +23,24 @@
             <a class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Blogs" ? "active" : "")" href="/Home/Blogs">Blogs</a>
             @if (User.Identity.IsAuthenticated)
             {
-                <span class="navbar-text user-name">Hoş geldin, @User.Identity.Name!</span>
-                @if (User.IsInRole("Admin"))
+
+
+                <a href="@Url.Action("Index", "Products", new { area = "Admin" })">
+                    Admin Dashboard
+
+                </a>
+
+                <a href="/Account/Logout">Logout</a>
+                if (User.IsInRole("Admin"))
                 {
-                    <a href="/Admin/Products">Admin Panel</a>
+                    <a href="@Url.Action("Index", "Products", new { area = "Admin" })">Admin Panel</a>
                 }
-                <form asp-action="Logout" method="post" class="d-inline">
-                    @Html.AntiForgeryToken()  <!-- Token ekle, POST çalışır -->
-                    <button type="submit" class="nav-link btn btn-link text-dark" style="border: none; background: none;">Çıkış Yap</button>
-                </form>
             }
-            <a href="/Account/Login">Giriş Yap</a>
+            else
+            {
+                <a href="/Account/Login">Login</a>
+
+            }
         </nav>
         <div class="buttons">
             <button id="search-btn">

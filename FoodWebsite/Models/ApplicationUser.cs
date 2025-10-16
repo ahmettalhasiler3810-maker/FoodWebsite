@@ -4,6 +4,7 @@ namespace FoodWebsite.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        // HİÇBİR EXTRA PROPERTY - BOŞ KALSIN
+        //public string? FirstName { get; set; }
+        //public string? LastName { get; set; }
     }
 }

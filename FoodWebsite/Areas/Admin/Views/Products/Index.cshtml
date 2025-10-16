@@ -5,342 +5,338 @@
 }
 
 <style>
-    <style >
-        /* === Genel Arka Plan === */
-/* === Genel Arka Plan === */
-body {
-    background-color: #b30000;
-    color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.admin-dashboard {
-    background-color: #111;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    margin: 40px auto;
-    max-width: 1400px;
-    width: 95%;
-}
-
-.admin-dashboard h1 {
-    text-align: center;
-    color: #fff;
-    border-bottom: 2px solid #ff3333;
-    padding-bottom: 15px;
-    margin-bottom: 25px;
-    font-weight: 700;
-    font-size: 2.2rem;
-}
-
-.admin-dashboard h2 {
-    color: #ff3333;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    border-left: 4px solid #ff3333;
-    padding-left: 15px;
-}
-
-/* === Tablo Stilleri === */
-.table-responsive {
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 20px;
-}
-
-.table {
-    background-color: #222;
-    color: #fff;
-    border-radius: 10px;
-    margin-bottom: 0;
-    font-size: 1rem;
-}
-
-.table thead {
-    background-color: #ff3333;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-.table th {
-    padding: 15px 12px;
-    border-bottom: 2px solid #ff3333;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.table td {
-    padding: 12px 10px;
-    vertical-align: middle;
-    border-bottom: 1px solid #444;
-    text-align: center;
-}
-
-.table tbody tr:hover {
-    background-color: rgba(255, 51, 51, 0.1);
-    transition: background-color 0.3s ease;
-}
-
-/* === Butonlar === */
-.btn {
-    border-radius: 8px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    padding: 8px 16px;
-    font-size: 0.95rem;
-    margin: 3px;
-    min-width: 80px;
-    border: none;
-}
-
-.btn-primary {
-    background-color: #ff3333;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-}
-
-.btn-primary:hover {
-    background-color: #ff5555;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 51, 51, 0.3);
-}
-
-.btn-warning {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #ff3333;
-}
-
-.btn-warning:hover {
-    background-color: #ff3333;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 51, 51, 0.3);
-}
-
-.btn-danger {
-    background-color: #ff3333;
-    border: none;
-}
-
-.btn-danger:hover {
-    background-color: #ff5555;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 51, 51, 0.3);
-}
-
-/* === Sekme (Tab) Stili === */
-.nav-tabs {
-    border-bottom: 2px solid #ff3333;
-    margin-bottom: 25px;
-}
-
-.nav-tabs .nav-link {
-    background-color: #222;
-    color: #fff;
-    border: 1px solid #444;
-    margin-right: 8px;
-    border-radius: 8px 8px 0 0;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.nav-tabs .nav-link:hover {
-    background-color: #333;
-    border-color: #ff3333;
-}
-
-.nav-tabs .nav-link.active {
-    background-color: #ff3333;
-    color: #fff;
-    border: 1px solid #ff3333;
-    transform: translateY(-2px);
-}
-
-/* === Formlar === */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    font-weight: bold;
-    color: #ff3333;
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    display: block;
-}
-
-.form-control {
-    background-color: #222;
-    color: #fff;
-    border: 1px solid #ff3333;
-    border-radius: 8px;
-    padding: 12px 15px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    background-color: #111;
-    border-color: #ff5555;
-    box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
-    color: #fff;
-}
-
-/* === Modal Stilleri === */
-.modal-content {
-    background-color: #111;
-    color: #fff;
-    border-radius: 15px;
-    border: 2px solid #ff3333;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-}
-
-.modal-header {
-    border-bottom: 2px solid #ff3333;
-    padding: 20px 25px;
-}
-
-.modal-title {
-    color: #ff3333;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.modal-body {
-    padding: 25px;
-}
-
-.modal-footer {
-    border-top: 2px solid #ff3333;
-    padding: 20px 25px;
-}
-
-.btn-close-white {
-    filter: invert(1);
-}
-
-/* === Buton Düzeni === */
-.action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-}
-
-.action-buttons .btn {
-    width: 90px;
-    text-align: center;
-}
-
-/* === Başlık ve İçerik Düzeni === */
-.d-flex.justify-content-between {
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-/* === Responsive === */
-@@media (max-width: 1200px) {
-    .admin-dashboard {
-        padding: 25px;
-        margin: 30px auto;
+    /* === Genel Arka Plan === */
+    body {
+        background-color: #e84242;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
+    .admin-dashboard {
+        background-color: #111;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        margin: 40px auto;
+        max-width: 1400px;
+        width: 95%;
+    }
+
+        .admin-dashboard h1 {
+            text-align: center;
+            color: #fff;
+            border-bottom: 2px solid #ff3333;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 2.2rem;
+        }
+
+        .admin-dashboard h2 {
+            color: #ff3333;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff3333;
+            padding-left: 15px;
+        }
+
+    /* === Tablo Stilleri === */
+    .table-responsive {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
     .table {
-        font-size: 0.95rem;
-    }
-}
-
-@@media (max-width: 992px) {
-    .admin-dashboard {
-        padding: 20px;
-        margin: 20px auto;
-    }
-    
-    .table th,
-    .table td {
-        padding: 10px 8px;
-    }
-    
-    .btn {
-        padding: 7px 14px;
-        font-size: 0.9rem;
-        min-width: 70px;
-    }
-}
-
-@@media (max-width: 768px) {
-    .admin-dashboard {
-        padding: 15px;
-        margin: 15px auto;
-    }
-    
-    .admin-dashboard h1 {
-        font-size: 1.8rem;
-    }
-    
-    .admin-dashboard h2 {
-        font-size: 1.5rem;
-    }
-    
-    .table {
-        font-size: 0.85rem;
-    }
-    
-    .nav-tabs .nav-link {
-        padding: 10px 15px;
+        background-color: #222;
+        color: #fff;
+        border-radius: 10px;
+        margin-bottom: 0;
         font-size: 1rem;
     }
-    
-    .action-buttons {
-        flex-direction: row;
-        justify-content: center;
-        gap: 5px;
-    }
-    
-    .action-buttons .btn {
-        width: auto;
-        min-width: 60px;
-        padding: 6px 10px;
-        font-size: 0.85rem;
-    }
-    
-    .btn-primary {
+
+        .table thead {
+            background-color: #ff3333;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .table th {
+            padding: 15px 12px;
+            border-bottom: 2px solid #ff3333;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table td {
+            padding: 12px 10px;
+            vertical-align: middle;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 51, 51, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+    /* === Butonlar === */
+    .btn {
+        border-radius: 8px;
+        font-weight: bold;
+        transition: all 0.3s ease;
         padding: 8px 16px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        margin: 3px;
+        min-width: 80px;
+        border: none;
     }
-}
 
-@@media (max-width: 576px) {
-    .admin-dashboard {
-        padding: 10px;
-        margin: 10px auto;
+    .btn-primary {
+        background-color: #ff3333;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+        .btn-primary:hover {
+            background-color: #ff5555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 51, 51, 0.3);
+        }
+
+    .btn-warning {
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #ff3333;
+    }
+
+        .btn-warning:hover {
+            background-color: #ff3333;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 51, 51, 0.3);
+        }
+
+    .btn-danger {
+        background-color: #ff3333;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #ff5555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 51, 51, 0.3);
+        }
+
+    /* === Sekme (Tab) Stili === */
+    .nav-tabs {
+        border-bottom: 2px solid #ff3333;
+        margin-bottom: 25px;
+    }
+
+        .nav-tabs .nav-link {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            margin-right: 8px;
+            border-radius: 8px 8px 0 0;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+            .nav-tabs .nav-link:hover {
+                background-color: #333;
+                border-color: #ff3333;
+            }
+
+            .nav-tabs .nav-link.active {
+                background-color: #ff3333;
+                color: #fff;
+                border: 1px solid #ff3333;
+                transform: translateY(-2px);
+            }
+
+    /* === Formlar === */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            color: #ff3333;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+    .form-control {
+        background-color: #222;
+        color: #fff;
+        border: 1px solid #ff3333;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            background-color: #111;
+            border-color: #ff5555;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+            color: #fff;
+        }
+
+    /* === Modal Stilleri === */
+    .modal-content {
+        background-color: #111;
+        color: #fff;
         border-radius: 15px;
+        border: 2px solid #ff3333;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
     }
-    
-    .table-responsive {
-        margin-top: 15px;
-    }
-    
-    .d-flex.justify-content-between {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .nav-tabs .nav-link {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-        margin-right: 5px;
-    }
-}
-</style>
 
+    .modal-header {
+        border-bottom: 2px solid #ff3333;
+        padding: 20px 25px;
+    }
+
+    .modal-title {
+        color: #ff3333;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .modal-footer {
+        border-top: 2px solid #ff3333;
+        padding: 20px 25px;
+    }
+
+    .btn-close-white {
+        filter: invert(1);
+    }
+
+    /* === Buton Düzeni === */
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+        .action-buttons .btn {
+            width: 90px;
+            text-align: center;
+        }
+
+    /* === Başlık ve İçerik Düzeni === */
+    .d-flex.justify-content-between {
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    /* === Responsive === */
+    @@media (max-width: 1200px) {
+        .admin-dashboard {
+            padding: 25px;
+            margin: 30px auto;
+        }
+
+        .table {
+            font-size: 0.95rem;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .admin-dashboard {
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        .table th,
+        .table td {
+            padding: 10px 8px;
+        }
+
+        .btn {
+            padding: 7px 14px;
+            font-size: 0.9rem;
+            min-width: 70px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .admin-dashboard {
+            padding: 15px;
+            margin: 15px auto;
+        }
+
+            .admin-dashboard h1 {
+                font-size: 1.8rem;
+            }
+
+            .admin-dashboard h2 {
+                font-size: 1.5rem;
+            }
+
+        .table {
+            font-size: 0.85rem;
+        }
+
+        .nav-tabs .nav-link {
+            padding: 10px 15px;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            flex-direction: row;
+            justify-content: center;
+            gap: 5px;
+        }
+
+            .action-buttons .btn {
+                width: auto;
+                min-width: 60px;
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+        .btn-primary {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .admin-dashboard {
+            padding: 10px;
+            margin: 10px auto;
+            border-radius: 15px;
+        }
+
+        .table-responsive {
+            margin-top: 15px;
+        }
+
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .nav-tabs .nav-link {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+    }
 </style>
 
 <div class="admin-dashboard">
@@ -355,14 +351,14 @@ body {
         <div class="alert alert-danger">@TempData["Error"]</div>
     }
 
-   
-
     <!-- Tab Content -->
     <div class="tab-content" id="adminTabContent">
         <!-- Products Tab -->
         <div class="tab-pane fade show active" id="products" role="tabpanel">
             <h2>Products</h2>
-            <a asp-action="Index" asp-route-id="0" class="btn btn-primary mb-3" onclick="showForm('createForm')">Add New Product</a>
+            <button class="btn btn-primary mb-3" onclick="showForm('createForm')">Add New Product</button>
+
+            <!-- ELLE GİRİLMİŞ ÜRÜNLER -->
             <table class="table">
                 <thead>
                     <tr>
@@ -375,48 +371,69 @@ body {
                     </tr>
                 </thead>
                 <tbody>
-                    @if (ViewBag.Products != null)
-                    {
-                        @foreach (var item in ViewBag.Products as List<FoodWebsite.Models.Product>)
-                        {
-                            <tr>
-                                <td>@item.Name</td>
-                                <td>@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
-                                <td>@item.Price TL</td>
-                                <td>@item.Category</td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                    {
-                                        <img src="@item.ImageUrl" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" alt="@item.Name" />
-                                    }
-                                    else
-                                    {
-                                        <span>No Image</span>
-                                    }
-                                </td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm" onclick="showForm('editForm', @item.Id)">Edit</button>
-                                    <form asp-action="Delete" style="display:inline;" method="post">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="6" class="text-center">No products yet.</td>
-                        </tr>
-                    }
+                    <!-- Pizza Margherita -->
+                    <tr>
+                        <td>Pizza Margherita</td>
+                        <td>Fresh tomatoes, mozzarella, basil, and olive oil on classic crust</td>
+                        <td>15.99 TL</td>
+                        <td>Italian</td>
+                        <td>
+                            <img src="/images/menu-1.jpg" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" alt="Pizza" onerror="this.src='https://via.placeholder.com/50x50/333/fff?text=PIZZA'" />
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editProduct(1)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(1)">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Big Burger -->
+                    <tr>
+                        <td>Big Burger</td>
+                        <td>Juicy beef patty with cheese, lettuce, tomato, and special sauce</td>
+                        <td>12.50 TL</td>
+                        <td>Fast Food</td>
+                        <td>
+                            <img src="/images/menu-2.jpg" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" alt="Burger" onerror="this.src='https://via.placeholder.com/50x50/333/fff?text=BURGER'" />
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editProduct(2)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(2)">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Mediterranean Glory -->
+                    <tr>
+                        <td>Mediterranean Glory</td>
+                        <td>Fresh salad with feta cheese, olives, and mediterranean spices</td>
+                        <td>5.99 TL</td>
+                        <td>Salad</td>
+                        <td>
+                            <img src="/images/menu-3.jpg" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" alt="Salad" onerror="this.src='https://via.placeholder.com/50x50/333/fff?text=SALAD'" />
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editProduct(3)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(3)">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- The Bomb Burger -->
+                    <tr>
+                        <td>The Bomb Burger</td>
+                        <td>Double beef patty with bacon, cheese, and explosive flavor</td>
+                        <td>13.99 TL</td>
+                        <td>Fast Food</td>
+                        <td>
+                            <img src="/images/menu-4.jpg" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" alt="Burger" onerror="this.src='https://via.placeholder.com/50x50/333/fff?text=BURGER'" />
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editProduct(4)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct(4)">Delete</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
             <!-- Create Form -->
             <div id="createForm" style="display:none;">
                 <h3>Add New Product</h3>
-                <form asp-action="Create" method="post">
+                <form id="createProductForm">
                     <div class="form-group">
                         <label>Name</label>
                         <input name="Name" class="form-control" required />
@@ -437,7 +454,7 @@ body {
                         <label>Image URL</label>
                         <input name="ImageUrl" class="form-control" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" onclick="createProduct()">Add</button>
                     <button type="button" class="btn btn-secondary" onclick="hideForm('createForm')">Cancel</button>
                 </form>
             </div>
@@ -445,7 +462,7 @@ body {
             <!-- Edit Form -->
             <div id="editForm" style="display:none;">
                 <h3>Edit Product</h3>
-                <form asp-action="Edit" method="post">
+                <form id="editProductForm">
                     <input type="hidden" name="Id" id="editId" />
                     <div class="form-group">
                         <label>Name</label>
@@ -467,7 +484,7 @@ body {
                         <label>Image URL</label>
                         <input name="ImageUrl" id="editImageUrl" class="form-control" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="updateProduct()">Save</button>
                     <button type="button" class="btn btn-secondary" onclick="hideForm('editForm')">Cancel</button>
                 </form>
             </div>
@@ -476,64 +493,200 @@ body {
         <!-- Users Tab -->
         <div class="tab-pane fade" id="users" role="tabpanel">
             <h2>Registered Users</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.Users != null)
-                    {
-                        @foreach (var user in ViewBag.Users as List<FoodWebsite.Models.ApplicationUser>)
-                        {
-                            <tr>
-                                <td>@user.UserName</td>
-                                <td>@user.Email</td>
-                                <td>@ViewBag.Roles[user.Id]</td>
-                                <td>
-                                    <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Edit</a>
-                                    <form asp-action="DeleteUser" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete?')">
-                                        <input type="hidden" name="id" value="@user.Id" />
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
+
+            <!-- Loading göstergesi -->
+            <div id="usersLoading" class="text-center">
+                <p>Kullanıcılar yükleniyor...</p>
+            </div>
+
+            <!-- Users tablosu (başlangıçta gizli) -->
+            <div id="usersTable" style="display: none;">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td colspan="4" class="text-center">No users yet.</td>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="usersTbody">
+                        <!-- JavaScript ile dolduracağız -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Hata mesajı -->
+            <div id="usersError" class="alert alert-danger" style="display: none;">
+                Kullanıcılar yüklenirken hata oluştu!
+            </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function showForm(formId) {
-    document.querySelectorAll('#products > div[id$="Form"]').forEach(f => f.style.display = 'none');
-    document.getElementById(formId).style.display = 'block';
-}
-function hideForm(formId) {
-    document.getElementById(formId).style.display = 'none';
-}
-    // Tab geçişleri için
+    // ========== PRODUCT FUNCTIONS ==========
+    function showForm(formId) {
+        document.querySelectorAll('#products > div[id$="Form"]').forEach(f => f.style.display = 'none');
+        document.getElementById(formId).style.display = 'block';
+    }
+
+    function hideForm(formId) {
+        document.getElementById(formId).style.display = 'none';
+    }
+
+    function editProduct(productId) {
+        // Örnek product data - gerçekte AJAX ile çekilecek
+        const productData = {
+            1: { name: 'Pizza Margherita', description: 'Fresh tomatoes, mozzarella, basil, and olive oil on classic crust', price: 15.99, category: 'Italian', imageUrl: '/images/menu-1.jpg' },
+            2: { name: 'Big Burger', description: 'Juicy beef patty with cheese, lettuce, tomato, and special sauce', price: 12.50, category: 'Fast Food', imageUrl: '/images/menu-2.jpg' },
+            3: { name: 'Mediterranean Glory', description: 'Fresh salad with feta cheese, olives, and mediterranean spices', price: 5.99, category: 'Salad', imageUrl: '/images/menu-3.jpg' },
+            4: { name: 'The Bomb Burger', description: 'Double beef patty with bacon, cheese, and explosive flavor', price: 13.99, category: 'Fast Food', imageUrl: '/images/menu-4.jpg' }
+        };
+
+        const product = productData[productId];
+        if (product) {
+            document.getElementById('editId').value = productId;
+            document.getElementById('editName').value = product.name;
+            document.getElementById('editDescription').value = product.description;
+            document.getElementById('editPrice').value = product.price;
+            document.getElementById('editCategory').value = product.category;
+            document.getElementById('editImageUrl').value = product.imageUrl;
+            showForm('editForm');
+        }
+    }
+
+    function deleteProduct(productId) {
+        if (confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
+            alert('Ürün silindi: ' + productId);
+            // Gerçekte AJAX ile silme işlemi yapılacak
+        }
+    }
+
+    function createProduct() {
+        const form = document.getElementById('createProductForm');
+        const formData = new FormData(form);
+        const product = Object.fromEntries(formData);
+
+        alert('Yeni ürün eklendi: ' + product.Name);
+        hideForm('createForm');
+        form.reset();
+    }
+
+    function updateProduct() {
+        const form = document.getElementById('editProductForm');
+        const formData = new FormData(form);
+        const product = Object.fromEntries(formData);
+
+        alert('Ürün güncellendi: ' + product.Name);
+        hideForm('editForm');
+    }
+
+    // ========== USER FUNCTIONS ==========
+    // Users verilerini AJAX ile çek
+    async function loadUsers() {
+        try {
+            console.log('🔄 Users yükleniyor...');
+            showUsersLoading();
+
+            // Fake users data - gerçekte AJAX ile çekilecek
+            const fakeUsers = [
+                { id: '1', userName: 'ahmet_user', email: 'Ahttsiler@yandex.com', role: 'User' },
+                { id: '2', userName: 'Admin_food', email: 'Admin@food.com', role: 'Admin' },
+                { id: '3', userName: 'ayse_customer', email: 'ahhhrr@mail.com', role: 'User' }
+            ];
+
+            // 1 saniye bekle (loading efekti için)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            displayUsers(fakeUsers);
+
+        } catch (error) {
+            console.error('❌ Users yüklenirken hata:', error);
+            showUsersError();
+        }
+    }
+
+    function showUsersLoading() {
+        document.getElementById('usersLoading').style.display = 'block';
+        document.getElementById('usersTable').style.display = 'none';
+        document.getElementById('usersError').style.display = 'none';
+    }
+
+    // Users'ı tabloya doldur
+    function displayUsers(users) {
+        const tbody = document.getElementById('usersTbody');
+        const loading = document.getElementById('usersLoading');
+        const table = document.getElementById('usersTable');
+        const errorDiv = document.getElementById('usersError');
+
+        // Loading'i gizle, hata mesajını gizle
+        loading.style.display = 'none';
+        errorDiv.style.display = 'none';
+
+        if (users && users.length > 0) {
+            // Tabloyu doldur
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = `
+                        <tr>
+                            <td>${user.userName || 'N/A'}</td>
+                            <td>${user.email || 'N/A'}</td>
+                            <td>${user.role || 'User'}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editUser('${user.id}')">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                tbody.innerHTML += row;
+            });
+
+            // Tabloyu göster
+            table.style.display = 'block';
+
+        } else {
+            // Kullanıcı yoksa
+            tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center">Henüz kullanıcı yok</td>
+                    </tr>
+                `;
+            table.style.display = 'block';
+        }
+    }
+
+    // Hata göster
+    function showUsersError() {
+        document.getElementById('usersLoading').style.display = 'none';
+        document.getElementById('usersTable').style.display = 'none';
+        document.getElementById('usersError').style.display = 'block';
+    }
+
+    // Edit user
+    function editUser(userId) {
+        alert('Edit user: ' + userId);
+    }
+
+    // Delete user
+    function deleteUser(userId) {
+        if (confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
+            alert('Kullanıcı silindi: ' + userId);
+            loadUsers(); // Listeyi yenile
+        }
+    }
+
+    // ========== TAB MANAGEMENT ==========
     document.addEventListener('DOMContentLoaded', function () {
-        // URL'de hash varsa o tab'i aç
-        if (window.location.hash) {
-            const hash = window.location.hash.replace('#', '');
-            const tabTrigger = document.querySelector(`[data-bs-target="#${hash}"]`);
-            if (tabTrigger) {
-                new bootstrap.Tab(tabTrigger).show();
-            }
+        // Users tab'ına tıklandığında verileri yükle
+        const usersTab = document.querySelector('[data-bs-target="#users"]');
+        if (usersTab) {
+            usersTab.addEventListener('click', function () {
+                console.log('👥 Users tab clicked');
+                loadUsers();
+            });
         }
 
         // Tab değiştiğinde URL'yi güncelle
@@ -542,56 +695,20 @@ function hideForm(formId) {
             tabEl.addEventListener('shown.bs.tab', function (event) {
                 const target = event.target.getAttribute('data-bs-target');
                 window.location.hash = target.replace('#', '');
-            });
-        });
-    });
-
-    function showForm(formId, productId = null) {
-        // Tüm formları gizle
-        document.querySelectorAll('#products > div[id$="Form"]').forEach(f => f.style.display = 'none');
-
-        // İstenen formu göster
-        const form = document.getElementById(formId);
-        if (form) {
-            form.style.display = 'block';
-
-            // Eğer edit formu ise ve productId varsa, formu doldur
-            if (formId === 'editForm' && productId) {
-                // Burada AJAX ile ürün bilgilerini çekip formu doldurabilirsin
-                // Şimdilik placeholder olarak bırakıyorum
-                console.log('Editing product:', productId);
-            }
-
-            // Forma kaydır
-            form.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
-    function hideForm(formId) {
-        document.getElementById(formId).style.display = 'none';
-    }
-
-    // Sayfa yüklendiğinde aktif tab'i kontrol et
-    window.onload = function () {
-        const activeTab = localStorage.getItem('activeAdminTab');
-        if (activeTab) {
-            const tabTrigger = document.querySelector(`[data-bs-target="#${activeTab}"]`);
-            if (tabTrigger) {
-                new bootstrap.Tab(tabTrigger).show();
-            }
-        }
-
-        // Tab değişikliklerini localStorage'a kaydet
-        const tabEls = document.querySelectorAll('button[data-bs-toggle="tab"]');
-        tabEls.forEach(tabEl => {
-            tabEl.addEventListener('shown.bs.tab', function (event) {
-                const target = event.target.getAttribute('data-bs-target');
                 localStorage.setItem('activeAdminTab', target.replace('#', ''));
             });
         });
-    };
-</script>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        // Sayfa yüklendiğinde aktif tab'i kontrol et
+        const activeTab = localStorage.getItem('activeAdminTab') || 'products';
+        const tabTrigger = document.querySelector(`[data-bs-target="#${activeTab}"]`);
+        if (tabTrigger) {
+            new bootstrap.Tab(tabTrigger).show();
+        }
+
+        // Eğer users tab aktifse, users'ı yükle
+        if (activeTab === 'users') {
+            loadUsers();
+        }
+    });
+</script>

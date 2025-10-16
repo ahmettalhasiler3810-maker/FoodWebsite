@@ -28,16 +28,23 @@
             <a href="home/blogs">Blogs</a>
             @if (User.Identity.IsAuthenticated)
             {
-                <a href="/Account/Logout">Çıkış Yap</a>
-                if (User.IsInRole("Admin"))
+                <a href="@Url.Action("Index", "Products", new { area = "Admin" })">Admin Dashboard</a>
+
+                <!-- Logout butonunu navbar içinde tut -->
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" style="display: inline;">
+                    <button type="submit"  >
+                        Logout
+                    </button>
+                </form>
+
+                @if (User.IsInRole("Admin"))
                 {
                     <a href="@Url.Action("Index", "Products", new { area = "Admin" })">Admin Panel</a>
                 }
             }
             else
             {
-                <a href="/Account/Login">Giriş Yap</a>
-                
+                <a href="/Account/Login">Login</a>
             }
         </nav>
         <div class="buttons">
